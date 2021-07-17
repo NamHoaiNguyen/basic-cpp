@@ -29,10 +29,10 @@ public:
     }
 };
 
-constexpr std::size__t countlower(conststr s, std::size_t n = 0,
+constexpr std::size_t countlower(conststr s, std::size_t n = 0,
                                               std::size_t c = 0)
 {
-    return n == s.suze() ? c :
+    return n == s.size() ? c :
             'a' <= s[n] && s[n] <= 'z' ? countlower(s, n + 1, c+1) :
                                          countlower(s, n + 1, c);
 }

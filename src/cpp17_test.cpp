@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(test_strongly_typed_constructors)
 			{
 				std::cout << "Constructor 1 called " << std::endl;
 			}
-			explicit test(strong_type_constructor_2 c2) : value_(c2.get())
+			explicit test(strong_type_constructor_2 c2) : value_(c2.get() / 2)
 			{
 				std::cout << "Constructor 2 called " << std::endl;
 			}
