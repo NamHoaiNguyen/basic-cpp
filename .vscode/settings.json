@@ -37,6 +37,27 @@
         "map": "cpp",
         "memory_resource": "cpp",
         "random": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "iterator": "cpp",
+        "strstream": "cpp",
+        "bitset": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "ctime": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "ratio": "cpp",
+        "thread": "cpp",
+        "typeindex": "cpp",
+        "variant": "cpp",
+        "*.ipp": "cpp"
     }
 }
