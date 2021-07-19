@@ -220,16 +220,16 @@ BOOST_AUTO_TEST_CASE(test_benchmark_crtp)
 {
 	using namespace benchmark_test_crtp_ns;
 	auto start_time_crtp = std::chrono::high_resolution_clock::now();
-	Derived_constant_crtp d42;
-	Derived_variable_crtp v(43);
+	Derived_constant_crtp d42_crtp;
+	Derived_variable_crtp v_crtp(43);
 	// Test<int> test;
 	// test.print(d42);
 	// test.print(43);
-	print(d42);
-	print(v);
+	print(d42_crtp);
+	print(v_crtp);
 	auto end_time_crtp = std::chrono::high_resolution_clock::now();
 	auto execution_time_crtp = std::chrono::duration_cast<std::chrono::nanoseconds>(end_time_crtp - start_time_crtp);
-	std::cout << execution_time.count() << std::endl;
+	std::cout << execution_time_crtp.count() << std::endl;
 	
 	auto start_time = std::chrono::high_resolution_clock::now();
 	Derived_constant d42;
@@ -254,3 +254,45 @@ BOOST_AUTO_TEST_CASE(test_benchmark_crtp)
 // 	std::cout << execution_time.count() << std::endl;
 
 // }
+
+/*
+**	Strong type interface
+**	Link:  https://www.fluentcpp.com/2016/12/08/strong-types-for-strong-interfaces/
+*/
+
+namespace test_strong_type_interface_ns
+{
+	template<typename type, typename parameter>
+	struct Strong_type_interface {
+		private:
+			type val_;
+		public:
+			explicit Strong_type_interface(const type &v) : val_{v} {}
+			explicit Strong_type_interface(type &&v) : val_{std::move(v)} {}
+			type &get() {
+				return val_;
+			}
+			const type& get() const {
+				return val_;
+			}
+	};
+}
+
+BOOST_AUTO_TEST_CASE(test_strong_type_interface)
+{
+	using namespace test_strong_type_interface_ns;
+	using strong_type_1 = Strong_type_interface<int, struct strong_type_interface_1>;
+	using strong_type_2 = Strong_type_interface<int, struct strong_type_interface_2>;
+
+	class test {
+		private:
+			int val_1;
+			int val_2;
+		public:
+			test(strong_type_1 v_1, strong_type_2 v_2) : val_1{v_1.get()}, val_2{v_2.get()} 
+			{
+
+			} 
+	};
+	test f(strong_type_1{1}, strong_type_2{1});
+}

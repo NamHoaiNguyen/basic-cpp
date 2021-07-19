@@ -49,3 +49,8 @@ out/
 *.json
 *.check_cache
 **/CMakeFiles/
+
+# Executable file
+bst
+constexpr
+cpp17_test
