@@ -296,3 +296,37 @@ BOOST_AUTO_TEST_CASE(test_strong_type_interface)
 	};
 	test f(strong_type_1{1}, strong_type_2{1});
 }
+
+namespace test_enable_if_ns
+{
+	template<typename T>
+	using EnableIfString = std::enable_if_t<
+							std::is_convertible_v<T, std::string>>;
+
+	class Person {
+		private:
+			std::string name_;
+		public:
+			template<typename STR, typename = EnableIfString<STR>>
+			explicit Person(STR&& n) : name_(std::forward<STR>(n)) {
+				std::cout << "TMPL-CONSTR for " << name_ << std::endl;
+			}
+			Person (Person const& p) : name_(p.name_) {
+				std::cout << "COPY-CONSTR Person " << name_ << std::endl;
+			}
+			Person (Person&& p) : name_(std::move(p.name_)) {
+				std::cout << "MOVE-CONSTR Person " << name_ << std::endl;
+			}
+	};
+}
+
+BOOST_AUTO_TEST_CASE(test_enable_if)
+{
+	using namespace test_enable_if_ns;
+
+	std::string s = "sname";
+	Person p1(s);
+	Person p2("tmp");
+	Person p3(p1);
+	Person p4(std::move(p1));
+}
