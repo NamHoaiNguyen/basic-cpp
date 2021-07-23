@@ -264,17 +264,17 @@ namespace test_strong_type_interface_ns
 {
 	template<typename type, typename parameter>
 	struct Strong_type_interface {
-		private:
-			type val_;
-		public:
-			explicit Strong_type_interface(const type &v) : val_{v} {}
-			explicit Strong_type_interface(type &&v) : val_{std::move(v)} {}
-			type &get() {
-				return val_;
-			}
-			const type& get() const {
-				return val_;
-			}
+	private:
+		type val_;
+	public:
+		explicit Strong_type_interface(const type &v) : val_{v} {}
+		explicit Strong_type_interface(type &&v) : val_{std::move(v)} {}
+		type &get() {
+			return val_;
+		}
+		const type& get() const {
+			return val_;
+		}
 	};
 }
 
@@ -304,19 +304,19 @@ namespace test_enable_if_ns
 							std::is_convertible_v<T, std::string>>;
 
 	class Person {
-		private:
-			std::string name_;
-		public:
-			template<typename STR, typename = EnableIfString<STR>>
-			explicit Person(STR&& n) : name_(std::forward<STR>(n)) {
-				std::cout << "TMPL-CONSTR for " << name_ << std::endl;
-			}
-			Person (Person const& p) : name_(p.name_) {
-				std::cout << "COPY-CONSTR Person " << name_ << std::endl;
-			}
-			Person (Person&& p) : name_(std::move(p.name_)) {
-				std::cout << "MOVE-CONSTR Person " << name_ << std::endl;
-			}
+	private:
+		std::string name_;
+	public:
+		template<typename STR, typename = EnableIfString<STR>>
+		explicit Person(STR&& n) : name_(std::forward<STR>(n)) {
+			std::cout << "TMPL-CONSTR for " << name_ << std::endl;
+		}
+		Person (Person const& p) : name_(p.name_) {
+			std::cout << "COPY-CONSTR Person " << name_ << std::endl;
+		}
+		Person (Person&& p) : name_(std::move(p.name_)) {
+			std::cout << "MOVE-CONSTR Person " << name_ << std::endl;
+		}
 	};
 }
 
@@ -330,3 +330,61 @@ BOOST_AUTO_TEST_CASE(test_enable_if)
 	Person p3(p1);
 	Person p4(std::move(p1));
 }
+
+namespace test_passing_strong_types_by_references_ns
+{
+	template<typename T, typename parameter>
+	class Strong_type_reference {
+	private:
+		T val_;
+	public:
+		explicit Strong_type_reference(T const& v) : val_{v}
+		{
+			std::cout << "Constructor " << std::endl;
+		}
+		template<typename T_ = T>
+		explicit Strong_type_reference(T&& v, typename
+									   std::enable_if<!std::is_reference<T_>::value, std::nullptr_t>::type = nullptr) : val_{std::forward<T>(v)} 
+		{ 							   //std::enable_if_t<!std::is_reference_v<T_>, std::nullptr_t>
+			std::cout << "template function " << std::endl;
+		}
+
+		T& get() {
+			return val_;
+		}
+		const T& get() const {
+			return val_;
+		}
+	};
+}
+
+BOOST_AUTO_TEST_CASE(test_strong_type_reference)
+{
+	using namespace test_passing_strong_types_by_references_ns;
+	using strong_type_ref_1 = Strong_type_reference<int&, struct strong_type_param_1>;
+	using strong_type_ref_2 = Strong_type_reference<int&, struct strong_type_param_2>;
+
+	struct test {
+		int &val_1;
+		int &val_2;
+		test(strong_type_ref_1 v_1, strong_type_ref_2 v_2) :val_1{v_1.get()}, val_2{v_2.get()}
+		{
+
+		}
+	};
+	int val_1 = 1;
+	int val_2 = 2;
+	test t(strong_type_ref_1{val_1}, strong_type_ref_2{val_2});
+	t.val_1 = 2;
+	t.val_2 = 2;
+	BOOST_CHECK(val_1 == 2);
+	BOOST_CHECK(val_2 == 2);
+}
+
+/* std::is_same_v
+template<typename T, typename = typename std::enable_if_t<!std::is_same_v<Person, typename std::decay_t<T>>>
+*/
+
+/* std::is_same
+template<typename T, typename = typename std::enable_if_t<!std::is_same<Person, typename std::decay_t<T>>::value>
+*/
