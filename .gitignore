@@ -40,7 +40,8 @@ out/
 # Cmake file
 *.cmake
 *.bin
-*.txt
+#*.txt
+CMakeCache.txt
 *.log
 *.internal
 *.make
