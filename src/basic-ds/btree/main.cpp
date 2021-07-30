@@ -5,6 +5,6 @@
 
 int main()
 {
-    std::shared_ptr<BtreeNode<int, int>> node = std::make_shared<BtreeNode<int, int>>( 5 );
+    std::shared_ptr<BtreeNode<int, int>> node = std::make_shared<BtreeNode<int, int>>( 5, false );
     return 0;
 }

@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <vector>
 
 template<typename T>
 using IsInteger = std::enable_if_t<std::is_same_v<int, T> || std::is_same_v<long, T>
@@ -18,24 +19,28 @@ template<typename T, typename U>
 class BtreeNode 
 {
 private:        
-    unsigned int node_size_;
+    U node_size_;
     bool is_leaf_;
+    unsigned int current_numbers_key_in_node_;
     std::shared_ptr<T> node_array_{nullptr};
-    std::shared_ptr<T> child_node_{nullptr};
+    // std::shared_ptr<T> child_node_{nullptr};
+    std::vector<std::shared_ptr<T>> child_node_;
 
 public:
     BtreeNode() = delete;
 
     template<typename T_ = T, typename U_ = U,
              typename = IsInteger<T_>, typename = AcceptType<U_>>
-    explicit BtreeNode(T_&& size) : node_size_(std::forward<T>(size)), node_array_(new T[2 * node_size_ - 1])
-                            , child_node_(new T[2 * node_size_]), is_leaf_(false)
+    explicit BtreeNode(U_&& size, bool&& is_leaf) : node_size_(std::forward<T>(size)), 
+                                                    is_leaf_(std::move(is_leaf)),
+                                                    current_numbers_key_in_node_(0), 
+                                                    node_array_(new T[2 * node_size_ - 1]),
+                                                    child_node_(2 * node_size_)
     {
 
     }
 
-// friend class BTree<T, U>
-
+friend class BTree;
 };
 
 #endif
