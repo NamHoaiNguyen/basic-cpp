@@ -34,13 +34,13 @@ public:
 
     template<typename T_ = T, typename U_ = U, typename V_ = V,
              typename = IsInteger<T_>, typename = AcceptType<U_>, typename = CheckBoolean<V_>>
-    explicit BtreeNode(U_&& size, V_&& is_leaf) : node_size_(std::forward<U_>(size)), 
+    explicit BtreeNode(U_&& size, V_&& is_leaf) :   node_size_(std::forward<U_>(size)), 
                                                     is_leaf_(std::move(is_leaf)),
                                                     current_numbers_key_in_node_(1), 
                                                     node_array_(new T[2 * node_size_- 1]),
                                                     child_node_(2 * node_size_, nullptr)
     {
-
+        std::cout << "value of size " << node_size_ << std::endl;
     }
 
     void traverse();
@@ -129,7 +129,7 @@ template<typename T, typename U, typename V>
 void BtreeNode<T, U, V>::traverse()
 {
     auto i{0};
-    for (i = 0; i < i < current_numbers_key_in_node_; i++) {
+    for (i = 0; i < current_numbers_key_in_node_; i++) {
         if (is_leaf_ == false)
             child_node_[i]->traverse();
         std::cout << " " << node_array_.get()[i];
