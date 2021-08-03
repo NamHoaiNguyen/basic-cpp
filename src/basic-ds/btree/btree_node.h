@@ -47,9 +47,9 @@ public:
 
     decltype(auto) search(T const& key); 
 
-    decltype(auto) split_child(int i, std::shared_ptr<BtreeNode<T, U, V>> &child_node_i);
+    decltype(auto) split_child(int i, std::shared_ptr<BtreeNode<T, U, V>>&child_node_i);
 
-    decltype(auto) insert_node_not_null(T&& key);
+    void insert_node_not_null(T&& key);
 
 template<typename, typename, typename>
 friend class BTree;
@@ -73,7 +73,7 @@ decltype(auto) BtreeNode<T, U, V>::search(T const& key)
 }
 
 template<typename T, typename U, typename V>
-decltype(auto) BtreeNode<T, U, V>::split_child(int i, std::shared_ptr<BtreeNode<T, U, V>> &child_node_i)
+decltype(auto) BtreeNode<T, U, V>::split_child(int i, std::shared_ptr<BtreeNode<T, U, V>>& child_node_i)
 {
     auto node_child = std::make_shared<BtreeNode<T, U, V>>(std::forward<U>(child_node_i->node_size_),
                                                            std::forward<V>(child_node_i->is_leaf_));
@@ -99,7 +99,7 @@ decltype(auto) BtreeNode<T, U, V>::split_child(int i, std::shared_ptr<BtreeNode<
 
 
 template<typename T, typename U, typename V>
-decltype(auto) BtreeNode<T, U, V>::insert_node_not_null(T&& key)
+void BtreeNode<T, U, V>::insert_node_not_null(T&& key)
 {
     auto i{node_size_ - 1};
 
@@ -110,18 +110,17 @@ decltype(auto) BtreeNode<T, U, V>::insert_node_not_null(T&& key)
         } 
         node_array_.get()[i + 1] = key;
         current_numbers_key_in_node_ += 1;
-
-        return;
     }
     else {
-        while (i >= 0 && node_array_.get()[i] > key)  i--;
+        while (i >= 0 && node_array_.get()[i] > key)  
+            i--;
+
         if (child_node_[i + 1]->current_numbers_key_in_node_ == 2 * node_size_ - 1) {
             split_child(i + 1, child_node_[i + 1]);
-            if (node_array_.get()[i + 1] < key)   i++;
+            if (node_array_.get()[i + 1] < key)  
+                i++;
         }
-        else {
-            child_node_[i + 1]->insert_node_not_null(std::forward<T>(key));
-        }
+        child_node_[i + 1]->insert_node_not_null(std::forward<T>(key));
     }
 }
 
