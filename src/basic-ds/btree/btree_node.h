@@ -97,23 +97,23 @@ decltype(auto) BtreeNode<T, U, V>::split_child(int i, std::shared_ptr<BtreeNode<
     current_numbers_key_in_node_ += 1;
 }
 
-
 template<typename T, typename U, typename V>
 void BtreeNode<T, U, V>::insert_node_not_null(T&& key)
 {
-    auto i{node_size_ - 1};
+    auto i{current_numbers_key_in_node_ - 1};
 
     if (is_leaf_ == true) {
         while (i >= 0 && node_array_.get()[i] > key) {
             node_array_.get()[i + 1] = node_array_.get()[i];
-            i--;
+            (i > 0) ? i-- : i;
         } 
-        node_array_.get()[i + 1] = key;
+        (i == 0) ? node_array_.get()[i + 1] = key 
+                 : node_array_.get()[i] = key ;
         current_numbers_key_in_node_ += 1;
     }
     else {
         while (i >= 0 && node_array_.get()[i] > key)  
-            i--;
+            (i > 0) ? i-- : i;
 
         if (child_node_[i + 1]->current_numbers_key_in_node_ == 2 * node_size_ - 1) {
             split_child(i + 1, child_node_[i + 1]);
@@ -136,7 +136,6 @@ void BtreeNode<T, U, V>::traverse()
 
     if (is_leaf_ == false) 
         child_node_[i]->traverse();
-    return;
 }
 
 #endif

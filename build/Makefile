@@ -130,32 +130,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named constexpr
-
-# Build rule for target.
-constexpr: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 constexpr
-.PHONY : constexpr
-
-# fast build rule for target.
-constexpr/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/constexpr.dir/build.make CMakeFiles/constexpr.dir/build
-.PHONY : constexpr/fast
-
-#=============================================================================
-# Target rules for targets named cpp17_test
-
-# Build rule for target.
-cpp17_test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cpp17_test
-.PHONY : cpp17_test
-
-# fast build rule for target.
-cpp17_test/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp17_test.dir/build.make CMakeFiles/cpp17_test.dir/build
-.PHONY : cpp17_test/fast
-
-#=============================================================================
 # Target rules for targets named bst
 
 # Build rule for target.
@@ -165,89 +139,21 @@ bst: cmake_check_build_system
 
 # fast build rule for target.
 bst/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/build
+	$(MAKE) $(MAKESILENT) -f src/basic-ds/CMakeFiles/bst.dir/build.make src/basic-ds/CMakeFiles/bst.dir/build
 .PHONY : bst/fast
 
-src/bst-shared_ptr.o: src/bst-shared_ptr.cpp.o
+#=============================================================================
+# Target rules for targets named btree
 
-.PHONY : src/bst-shared_ptr.o
+# Build rule for target.
+btree: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 btree
+.PHONY : btree
 
-# target to build an object file
-src/bst-shared_ptr.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/src/bst-shared_ptr.cpp.o
-.PHONY : src/bst-shared_ptr.cpp.o
-
-src/bst-shared_ptr.i: src/bst-shared_ptr.cpp.i
-
-.PHONY : src/bst-shared_ptr.i
-
-# target to preprocess a source file
-src/bst-shared_ptr.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/src/bst-shared_ptr.cpp.i
-.PHONY : src/bst-shared_ptr.cpp.i
-
-src/bst-shared_ptr.s: src/bst-shared_ptr.cpp.s
-
-.PHONY : src/bst-shared_ptr.s
-
-# target to generate assembly for a file
-src/bst-shared_ptr.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/src/bst-shared_ptr.cpp.s
-.PHONY : src/bst-shared_ptr.cpp.s
-
-src/constexpr_practise.o: src/constexpr_practise.cpp.o
-
-.PHONY : src/constexpr_practise.o
-
-# target to build an object file
-src/constexpr_practise.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/constexpr.dir/build.make CMakeFiles/constexpr.dir/src/constexpr_practise.cpp.o
-.PHONY : src/constexpr_practise.cpp.o
-
-src/constexpr_practise.i: src/constexpr_practise.cpp.i
-
-.PHONY : src/constexpr_practise.i
-
-# target to preprocess a source file
-src/constexpr_practise.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/constexpr.dir/build.make CMakeFiles/constexpr.dir/src/constexpr_practise.cpp.i
-.PHONY : src/constexpr_practise.cpp.i
-
-src/constexpr_practise.s: src/constexpr_practise.cpp.s
-
-.PHONY : src/constexpr_practise.s
-
-# target to generate assembly for a file
-src/constexpr_practise.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/constexpr.dir/build.make CMakeFiles/constexpr.dir/src/constexpr_practise.cpp.s
-.PHONY : src/constexpr_practise.cpp.s
-
-src/cpp17_test.o: src/cpp17_test.cpp.o
-
-.PHONY : src/cpp17_test.o
-
-# target to build an object file
-src/cpp17_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp17_test.dir/build.make CMakeFiles/cpp17_test.dir/src/cpp17_test.cpp.o
-.PHONY : src/cpp17_test.cpp.o
-
-src/cpp17_test.i: src/cpp17_test.cpp.i
-
-.PHONY : src/cpp17_test.i
-
-# target to preprocess a source file
-src/cpp17_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp17_test.dir/build.make CMakeFiles/cpp17_test.dir/src/cpp17_test.cpp.i
-.PHONY : src/cpp17_test.cpp.i
-
-src/cpp17_test.s: src/cpp17_test.cpp.s
-
-.PHONY : src/cpp17_test.s
-
-# target to generate assembly for a file
-src/cpp17_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cpp17_test.dir/build.make CMakeFiles/cpp17_test.dir/src/cpp17_test.cpp.s
-.PHONY : src/cpp17_test.cpp.s
+# fast build rule for target.
+btree/fast:
+	$(MAKE) $(MAKESILENT) -f src/basic-ds/CMakeFiles/btree.dir/build.make src/basic-ds/CMakeFiles/btree.dir/build
+.PHONY : btree/fast
 
 # Help Target
 help:
@@ -258,17 +164,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bst"
-	@echo "... constexpr"
-	@echo "... cpp17_test"
-	@echo "... src/bst-shared_ptr.o"
-	@echo "... src/bst-shared_ptr.i"
-	@echo "... src/bst-shared_ptr.s"
-	@echo "... src/constexpr_practise.o"
-	@echo "... src/constexpr_practise.i"
-	@echo "... src/constexpr_practise.s"
-	@echo "... src/cpp17_test.o"
-	@echo "... src/cpp17_test.i"
-	@echo "... src/cpp17_test.s"
+	@echo "... btree"
 .PHONY : help
 
 

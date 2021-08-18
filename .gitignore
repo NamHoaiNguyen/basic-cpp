@@ -42,6 +42,7 @@ out/
 *.bin
 #*.txt
 CMakeCache.txt
+*Makefile
 *.log
 *.internal
 *.make
