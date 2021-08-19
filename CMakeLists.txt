@@ -16,6 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(src/basic-ds)
 
+add_executable(stl src/stl/stl_test.cc)
 # add_executable(cpp17_test src/cpp17_test.cpp)
 
 # add_executable(bst src/bst-shared_ptr.cpp)

@@ -130,6 +130,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named stl
+
+# Build rule for target.
+stl: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stl
+.PHONY : stl
+
+# fast build rule for target.
+stl/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stl.dir/build.make CMakeFiles/stl.dir/build
+.PHONY : stl/fast
+
+#=============================================================================
 # Target rules for targets named bst
 
 # Build rule for target.
@@ -155,6 +168,33 @@ btree/fast:
 	$(MAKE) $(MAKESILENT) -f src/basic-ds/CMakeFiles/btree.dir/build.make src/basic-ds/CMakeFiles/btree.dir/build
 .PHONY : btree/fast
 
+src/stl/stl_test.o: src/stl/stl_test.cc.o
+
+.PHONY : src/stl/stl_test.o
+
+# target to build an object file
+src/stl/stl_test.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stl.dir/build.make CMakeFiles/stl.dir/src/stl/stl_test.cc.o
+.PHONY : src/stl/stl_test.cc.o
+
+src/stl/stl_test.i: src/stl/stl_test.cc.i
+
+.PHONY : src/stl/stl_test.i
+
+# target to preprocess a source file
+src/stl/stl_test.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stl.dir/build.make CMakeFiles/stl.dir/src/stl/stl_test.cc.i
+.PHONY : src/stl/stl_test.cc.i
+
+src/stl/stl_test.s: src/stl/stl_test.cc.s
+
+.PHONY : src/stl/stl_test.s
+
+# target to generate assembly for a file
+src/stl/stl_test.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stl.dir/build.make CMakeFiles/stl.dir/src/stl/stl_test.cc.s
+.PHONY : src/stl/stl_test.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +205,10 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bst"
 	@echo "... btree"
+	@echo "... stl"
+	@echo "... src/stl/stl_test.o"
+	@echo "... src/stl/stl_test.i"
+	@echo "... src/stl/stl_test.s"
 .PHONY : help
 
 
