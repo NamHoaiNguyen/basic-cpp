@@ -152,7 +152,7 @@ bst: cmake_check_build_system
 
 # fast build rule for target.
 bst/fast:
-	$(MAKE) $(MAKESILENT) -f src/basic-ds/CMakeFiles/bst.dir/build.make src/basic-ds/CMakeFiles/bst.dir/build
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/build
 .PHONY : bst/fast
 
 #=============================================================================
@@ -165,8 +165,62 @@ btree: cmake_check_build_system
 
 # fast build rule for target.
 btree/fast:
-	$(MAKE) $(MAKESILENT) -f src/basic-ds/CMakeFiles/btree.dir/build.make src/basic-ds/CMakeFiles/btree.dir/build
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/btree.dir/build.make CMakeFiles/btree.dir/build
 .PHONY : btree/fast
+
+src/basic-ds/bst/bst.o: src/basic-ds/bst/bst.cc.o
+
+.PHONY : src/basic-ds/bst/bst.o
+
+# target to build an object file
+src/basic-ds/bst/bst.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/src/basic-ds/bst/bst.cc.o
+.PHONY : src/basic-ds/bst/bst.cc.o
+
+src/basic-ds/bst/bst.i: src/basic-ds/bst/bst.cc.i
+
+.PHONY : src/basic-ds/bst/bst.i
+
+# target to preprocess a source file
+src/basic-ds/bst/bst.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/src/basic-ds/bst/bst.cc.i
+.PHONY : src/basic-ds/bst/bst.cc.i
+
+src/basic-ds/bst/bst.s: src/basic-ds/bst/bst.cc.s
+
+.PHONY : src/basic-ds/bst/bst.s
+
+# target to generate assembly for a file
+src/basic-ds/bst/bst.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bst.dir/build.make CMakeFiles/bst.dir/src/basic-ds/bst/bst.cc.s
+.PHONY : src/basic-ds/bst/bst.cc.s
+
+src/basic-ds/btree/main.o: src/basic-ds/btree/main.cc.o
+
+.PHONY : src/basic-ds/btree/main.o
+
+# target to build an object file
+src/basic-ds/btree/main.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/btree.dir/build.make CMakeFiles/btree.dir/src/basic-ds/btree/main.cc.o
+.PHONY : src/basic-ds/btree/main.cc.o
+
+src/basic-ds/btree/main.i: src/basic-ds/btree/main.cc.i
+
+.PHONY : src/basic-ds/btree/main.i
+
+# target to preprocess a source file
+src/basic-ds/btree/main.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/btree.dir/build.make CMakeFiles/btree.dir/src/basic-ds/btree/main.cc.i
+.PHONY : src/basic-ds/btree/main.cc.i
+
+src/basic-ds/btree/main.s: src/basic-ds/btree/main.cc.s
+
+.PHONY : src/basic-ds/btree/main.s
+
+# target to generate assembly for a file
+src/basic-ds/btree/main.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/btree.dir/build.make CMakeFiles/btree.dir/src/basic-ds/btree/main.cc.s
+.PHONY : src/basic-ds/btree/main.cc.s
 
 src/stl/stl_test.o: src/stl/stl_test.cc.o
 
@@ -206,6 +260,12 @@ help:
 	@echo "... bst"
 	@echo "... btree"
 	@echo "... stl"
+	@echo "... src/basic-ds/bst/bst.o"
+	@echo "... src/basic-ds/bst/bst.i"
+	@echo "... src/basic-ds/bst/bst.s"
+	@echo "... src/basic-ds/btree/main.o"
+	@echo "... src/basic-ds/btree/main.i"
+	@echo "... src/basic-ds/btree/main.s"
 	@echo "... src/stl/stl_test.o"
 	@echo "... src/stl/stl_test.i"
 	@echo "... src/stl/stl_test.s"
