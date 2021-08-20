@@ -30,6 +30,9 @@
 *.exe
 *.out
 *.app
+bst
+btree
+stl
 
 # Build directory
 out/
