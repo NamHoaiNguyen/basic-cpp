@@ -3,22 +3,63 @@
 #include "utils.h"
 
 #include <boost/test/included/unit_test.hpp>
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <string_view>
 #include <vector>
+using namespace std;
+
+void log(std::string_view txt, const std::vector<int>& vec)
+{
+    std::cout << txt;
+    std::copy(vec.begin(), vec.end(), std::ostream_iterator<int>(std::cout, " "));
+    std::cout << std::endl;
+}
 
 void log(std::string_view txt, int64_t val, bool tag) {
 	if (tag) {
-		std::cout << txt << std::boolalpha << (bool)val << "\n";
+		std::cout << txt << std::boolalpha << bool(val) << std::endl;
 	} else {
-		std::cout << txt << std::noboolalpha << val << "\n";
+		std::cout << txt << std::noboolalpha << val << std::endl;
 	}
+}
+
+/*test std::for_each, std::transform*/
+BOOST_AUTO_TEST_CASE(test_for_each_transform)
+{
+    TEST_LOG();
+
+    std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int> vec2;
+
+    std::for_each(vec.begin(), vec.end(), [](auto& elem) {
+        elem = elem * 2;
+    });
+
+    log("Vector after for_each: ", vec);
+
+    std::transform(vec.begin(), vec.end(), std::back_inserter(vec2), [](auto &elem) {
+        return elem * elem;
+    });
+
+    log("- Vector 1: ", vec);
+	log("- Vector 2: ", vec2);
+
+    std::vector<int>vec_res = {2, 4, 6, 8, 10, 12, 14, 16,18, 20};
+    auto check_equal_vec = std::equal(vec.begin(), vec.end(), vec_res.begin());
+
+    std::vector<int>vec_res2 = {4, 16, 36, 64, 100, 144, 196, 256 ,324, 400};
+    auto check_equal_vec2 = std::equal(vec2.begin(), vec2.end(), vec_res2.begin());
+
+    BOOST_REQUIRE(check_equal_vec == true);
+    BOOST_REQUIRE(check_equal_vec2 == true);
 }
 
 /*test any_of, all_of, none_of*/
 BOOST_AUTO_TEST_CASE(test_algorithm)
 {
-   TEST_LOG();
+    TEST_LOG();
 
     std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -26,18 +67,17 @@ BOOST_AUTO_TEST_CASE(test_algorithm)
         return elem > 0;
     });
 
-    std::cout << "All elems are positive " << all << std::endl;
+    log("All elems are positive: ", all, true);
 
     auto any = std::any_of(vec.begin(), vec.end(), [](const auto& elem) {
         return elem < 0;
     });
 
-    std::cout << "Has elem smaller than 0 " << any << std::endl;
+    log("Has elem smaller than zero: ", any, true);
 
     auto none = std::none_of(vec.begin(), vec.end(), [](const auto& elem) {
 		return elem % 2 == 0;
 	});
 	log("Has no even elements: ", none, true);
-
-    std::cout << "Has no even elements " << none << std::endl;
 }
+

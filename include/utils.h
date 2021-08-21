@@ -10,12 +10,13 @@
 
 struct TestLog {
 	TestLog() {
-		std::cout << "\033[1m\033[32m---------- START TEST CASE: " << boost::unit_test::framework::current_test_case().p_name
+		std::cout << "\033[1m\033[32m----------- START TEST CASE: " << boost::unit_test::framework::current_test_case().p_name
                   << "\033[1m\033[32m----------" << std::endl;
 	}
 	~TestLog() {
 		std::cout << "\033[1m\033[31m---------- FINISH TEST CASE: " << boost::unit_test::framework::current_test_case().p_name
                   << "\033[1m\033[31m----------" << std::endl;
+		std::cout << std::endl;
 	}
 };
 
