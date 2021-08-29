@@ -81,3 +81,17 @@ BOOST_AUTO_TEST_CASE(test_algorithm)
 	log("Has no even elements: ", none, true);
 }
 
+BOOST_AUTO_TEST_CASE(test_remove)
+{
+    TEST_LOG();
+
+    std::vector<int> vec = {1,1,2,4,2,3,3,3,5,5,4,5,2,8,1,1,2,2,3,5,8};
+
+    auto rem = vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
+    log("Vector after applying std::remove ", vec);
+    BOOST_TEST((vec == std::vector{1, 1, 2, 4, 2, 3, 3, 3, 5, 5, 4, 5, 2, 1, 1, 2, 2, 3, 5}));
+   
+    auto uni = vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
+    log("Vector after applying std::unique ", vec);
+    BOOST_TEST((vec == std::vector{1, 2, 4, 2, 3, 5, 4, 5, 2, 1, 2, 3, 5}));
+}
