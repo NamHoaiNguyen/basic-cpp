@@ -41,19 +41,19 @@ out/
 .vs/
 
 # Cmake file
-*.cmake
-*.bin
-#*.txt
-CMakeCache.txt
-*Makefile
-*.log
-*.internal
-*.make
-*.marks
-*.includecache
-*.json
-*.check_cache
-**/CMakeFiles/
+# *.cmake
+# *.bin
+# #*.txt
+# CMakeCache.txt
+# *Makefile
+# *.log
+# *.internal
+# *.make
+# *.marks
+# *.includecache
+# *.json
+# *.check_cache
+# **/CMakeFiles/
 
 # Executable file
 bst

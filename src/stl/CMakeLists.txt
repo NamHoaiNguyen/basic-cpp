@@ -5,9 +5,9 @@
 
 # link_directories(${Boost_LIBRARY_DIR})
 
-find_package(Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
+# find_package(Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
 
-add_executable(stl stl_test.cc)
+# add_executable(stl stl_test.cc)
 
-target_link_libraries(stl ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}) 
+# target_link_libraries(stl ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}) 
 

@@ -20,7 +20,9 @@ if(Boost_FOUND)
     add_executable(btree src/basic-ds/btree/main.cc)
 
     # add_subdirectory(src/stl)
-    add_executable(stl src/stl/stl_test.cc )
+    add_executable(stl src/stl/stl_test.cc)
+
+    add_executable(thread src/stl/stl_thread.cc)
 
 endif()
 

@@ -130,6 +130,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named thread
+
+# Build rule for target.
+thread: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 thread
+.PHONY : thread
+
+# fast build rule for target.
+thread/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/thread.dir/build.make CMakeFiles/thread.dir/build
+.PHONY : thread/fast
+
+#=============================================================================
 # Target rules for targets named stl
 
 # Build rule for target.
@@ -249,6 +262,33 @@ src/stl/stl_test.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stl.dir/build.make CMakeFiles/stl.dir/src/stl/stl_test.cc.s
 .PHONY : src/stl/stl_test.cc.s
 
+src/stl/stl_thread.o: src/stl/stl_thread.cc.o
+
+.PHONY : src/stl/stl_thread.o
+
+# target to build an object file
+src/stl/stl_thread.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/thread.dir/build.make CMakeFiles/thread.dir/src/stl/stl_thread.cc.o
+.PHONY : src/stl/stl_thread.cc.o
+
+src/stl/stl_thread.i: src/stl/stl_thread.cc.i
+
+.PHONY : src/stl/stl_thread.i
+
+# target to preprocess a source file
+src/stl/stl_thread.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/thread.dir/build.make CMakeFiles/thread.dir/src/stl/stl_thread.cc.i
+.PHONY : src/stl/stl_thread.cc.i
+
+src/stl/stl_thread.s: src/stl/stl_thread.cc.s
+
+.PHONY : src/stl/stl_thread.s
+
+# target to generate assembly for a file
+src/stl/stl_thread.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/thread.dir/build.make CMakeFiles/thread.dir/src/stl/stl_thread.cc.s
+.PHONY : src/stl/stl_thread.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -260,6 +300,7 @@ help:
 	@echo "... bst"
 	@echo "... btree"
 	@echo "... stl"
+	@echo "... thread"
 	@echo "... src/basic-ds/bst/bst.o"
 	@echo "... src/basic-ds/bst/bst.i"
 	@echo "... src/basic-ds/bst/bst.s"
@@ -269,6 +310,9 @@ help:
 	@echo "... src/stl/stl_test.o"
 	@echo "... src/stl/stl_test.i"
 	@echo "... src/stl/stl_test.s"
+	@echo "... src/stl/stl_thread.o"
+	@echo "... src/stl/stl_thread.i"
+	@echo "... src/stl/stl_thread.s"
 .PHONY : help
 
 
