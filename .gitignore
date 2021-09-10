@@ -38,7 +38,7 @@ stl
 out/
 
 # VS directory
-.vs/
+.vscode
 
 # Cmake file
 # *.cmake
