@@ -144,3 +144,13 @@ BOOST_AUTO_TEST_CASE(test_find)
         ? std::cout << "v contains an odd number: " << *res3 << std::endl
         : std::cout << "v doesn't contain an odd number" << std::endl;
 }
+
+/*distance*/
+BOOST_AUTO_TEST_CASE(test_distance)
+{
+    std::vector<int> v = {1, 2, 3, 4};
+    std::cout << "distance(first, last) = "
+              << std::distance(v.begin(), v.end()) << std::endl
+              << "distance(last,first) = "
+              << std::distance(v.end(), v.begin()) << std::endl;
+}
