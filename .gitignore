@@ -32,7 +32,6 @@
 *.app
 bst
 btree
-stl
 
 # Build directory
 out/
