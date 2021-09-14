@@ -117,3 +117,30 @@ BOOST_AUTO_TEST_CASE(test_partition)
     std::copy(p, v.end(), std::ostream_iterator<int>(std::cout, " "));
     std::cout << std::endl;
 }
+
+/*find, find_if, find_if_not*/
+BOOST_AUTO_TEST_CASE(test_find)
+{
+    TEST_LOG();
+
+    std::vector<int> v = {1, 2, 3, 4};
+    auto n1 = 3;
+    auto n2 = 5;
+    auto is_even = [](auto i) { return i % 2 == 0; };
+
+    auto res1 = std::find(v.begin(), v.end(), n1);
+    auto res2 = std::find_if(v.begin(), v.end(), is_even);
+    auto res3 = std::find_if_not(v.begin(), v.end(), is_even); /*Return the first iterator for an element which predicate condition return false*/
+
+    (res1 != v.end()) 
+        ? std::cout << "v contains n1 value: " << *res1 << std::endl
+        : std::cout << "v doesn't contain " << n1 << std::endl;
+
+    (res2 != v.end())
+        ? std::cout << "v contains an even number: " << *res2 << std::endl
+        : std::cout << "v doesn't contain an even number" << std::endl;
+
+    (res2 != v.end())
+        ? std::cout << "v contains an odd number: " << *res3 << std::endl
+        : std::cout << "v doesn't contain an odd number" << std::endl;
+}
