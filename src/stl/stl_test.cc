@@ -118,16 +118,17 @@ BOOST_AUTO_TEST_CASE(test_partition)
     std::cout << std::endl;
 }
 
-/*find, find_if, find_if_not*/
+/*find, find_if, find_if_not, binary_search, equal_range*/
 BOOST_AUTO_TEST_CASE(test_find)
 {
     TEST_LOG();
 
-    std::vector<int> v = {1, 2, 3, 4};
+    std::vector<int> v = {1, 2, 3, 3, 4, 6, 7, 8, 9, 10};
     auto n1 = 3;
     auto n2 = 5;
     auto is_even = [](auto i) { return i % 2 == 0; };
 
+    /*For unsorted elements*/
     auto res1 = std::find(v.begin(), v.end(), n1);
     auto res2 = std::find_if(v.begin(), v.end(), is_even);
     auto res3 = std::find_if_not(v.begin(), v.end(), is_even); /*Return the first iterator for an element which predicate condition return false*/
@@ -143,6 +144,29 @@ BOOST_AUTO_TEST_CASE(test_find)
     (res2 != v.end())
         ? std::cout << "v contains an odd number: " << *res3 << std::endl
         : std::cout << "v doesn't contain an odd number" << std::endl;
+
+    /*For sorted elements*/
+    auto res4 = std::binary_search(v.begin(), v.end(), n1);
+    std::cout << "v contain n1 value(found with binary search): " << std::boolalpha << res4 << std::endl;
+
+    /*res5 =std::pair<std::vector<int>::iterator, std::vector<int>::iterator>
+        Second paramter is pass-the-end iterator
+    */
+    auto res5 = std::equal_range(v.begin(), v.end(), n1);
+    if (res5.first != v.end()) {
+        std::cout << "Distance first index " << std::distance(v.begin(), res5.first) << std::endl;
+        std::cout << "Distance last index " << std::distance(v.begin(), res5.second) << std::endl;
+    }
+
+    auto res6 = std::lower_bound(v.begin(), v.end(), n2);
+    if (res6 != v.end()) {
+        std::cout << "Value and distance " << *res6 << " " << std::distance(v.begin(), res6) << std::endl;
+    }
+    
+    auto res7 = std::upper_bound(v.begin(), v.end(), n1);
+    if (res7 != v.end()) {
+        std::cout << "Value and distance " << *res7 << " " << std::distance(v.begin(), res7) << std::endl;
+    }
 }
 
 /*distance*/
@@ -175,6 +199,8 @@ BOOST_AUTO_TEST_CASE(test_min_max)
     std::cout << "min element at " << min_elem << std::endl;
     std::cout << "max element at " << max_elem << std::endl;
 }
+
+
 
 
 
