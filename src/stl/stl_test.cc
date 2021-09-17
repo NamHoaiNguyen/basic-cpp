@@ -118,10 +118,32 @@ BOOST_AUTO_TEST_CASE(test_partition)
     std::cout << std::endl;
 }
 
+/*Testing level of abstraction*/
+namespace test_level_of_abstraction {
+    template<typename Container>
+    class Range {
+        private:
+        typename Container::iterator begin_;
+        typename Container::iterator end_; 
+        public:
+        Range(std::pair<typename Container::iterator, typename Container::iterator> range) : begin_(range.first), end_(range.second) {
+
+        }
+        typename Container::iterator begin() {
+            return begin_;
+        }
+        typename Container::iterator end() {
+            return end_;
+        }
+    };
+}
+
 /*find, find_if, find_if_not, binary_search, equal_range*/
 BOOST_AUTO_TEST_CASE(test_find)
 {
     TEST_LOG();
+
+    using namespace test_level_of_abstraction;
 
     std::vector<int> v = {1, 2, 3, 3, 4, 6, 7, 8, 9, 10};
     auto n1 = 3;
@@ -167,6 +189,16 @@ BOOST_AUTO_TEST_CASE(test_find)
     if (res7 != v.end()) {
         std::cout << "Value and distance " << *res7 << " " << std::distance(v.begin(), res7) << std::endl;
     }
+
+    Range<std::vector<int>> test_range = std::equal_range(v.begin(), v.end(), n1);
+    
+    std::for_each(test_range.begin(), test_range.end(), [](auto& elem) {
+        elem = elem * 2;
+    });
+    
+    std::cout << std::endl;
+
+    BOOST_TEST((v == std::vector{1, 2, 6, 6, 4, 6, 7, 8, 9, 10}));
 }
 
 /*distance*/
