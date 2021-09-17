@@ -148,9 +148,35 @@ BOOST_AUTO_TEST_CASE(test_find)
 /*distance*/
 BOOST_AUTO_TEST_CASE(test_distance)
 {
+    TEST_LOG();
+
     std::vector<int> v = {1, 2, 3, 4};
     std::cout << "distance(first, last) = "
               << std::distance(v.begin(), v.end()) << std::endl
-              << "distance(last,first) = "
+              << "distance(last, first) = "
               << std::distance(v.end(), v.begin()) << std::endl;
 }
+
+/*min, max, min_element, max_element*/
+BOOST_AUTO_TEST_CASE(test_min_max)
+{
+    TEST_LOG();
+
+    constexpr auto a = 1;
+    constexpr auto b = 12;
+    std::vector<std::string> v = {"foo", "bar", "hello"};
+
+    std::cout << "smaller of a and b " << std::min(a, b) << std::endl;
+    std::cout << "smaller of a and b " << std::max(a, b) << std::endl;
+
+    std::vector<int> vec = {1, 4, 7, 14, 5, 12, 9};
+    auto min_elem = std::distance(vec.begin(), std::min_element(vec.begin(), vec.end()));
+    auto max_elem = std::distance(vec.begin(), std::max_element(vec.begin(), vec.end()));
+    std::cout << "min element at " << min_elem << std::endl;
+    std::cout << "max element at " << max_elem << std::endl;
+}
+
+
+
+
+
