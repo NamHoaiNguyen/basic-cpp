@@ -24,6 +24,8 @@ if(Boost_FOUND)
 
     add_executable(thread src/stl/stl_thread.cc)
 
+    add_executable(trail src/trail_test.cc)
+
 endif()
 
 # add_executable(cpp17_test src/cpp17_test.cpp)
