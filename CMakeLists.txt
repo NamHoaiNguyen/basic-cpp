@@ -24,7 +24,11 @@ if(Boost_FOUND)
 
     add_executable(thread src/stl/stl_thread.cc)
 
-    add_executable(trail src/trail_test.cc)
+    add_executable(constexpr src/other/constexpr_practise.cc)
+
+    add_executable(cpp17 src/other/cpp17_test.cc)
+
+    add_executable(trail src/other/trail_test.cc)
 
 endif()
 
