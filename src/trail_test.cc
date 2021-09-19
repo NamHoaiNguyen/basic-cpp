@@ -142,3 +142,39 @@ BOOST_AUTO_TEST_CASE(test_element_type) {
     std::vector<float> v;
     printElementType(v);
 }
+
+namespace is_same {
+    template<typename T1, typename T2>
+    struct IsSameT : std::false_type {
+
+    };
+
+    template<typename T>
+    struct IsSameT<T, T> : std::true_type {
+
+    };
+
+    template<typename T>
+    void fooImpl(T, std::true_type) {
+        std::cout << "fooImplt(T, true) for int called " << std::endl;
+    }
+
+    template<typename T>
+    void fooImpl(T, std::false_type) {
+        std::cout << "fooImplt(T, false) for int called " << std::endl;
+    }
+
+    template<typename T>
+    void foo(T t) {
+        fooImpl(t, IsSameT<T, int>{});
+    }
+}
+
+BOOST_AUTO_TEST_CASE(test_issame_type) {
+    TEST_LOG();
+
+    using namespace is_same;
+
+    foo(42);
+    foo(7.7);
+}
