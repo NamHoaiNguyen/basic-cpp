@@ -239,4 +239,12 @@ BOOST_AUTO_TEST_CASE(test_fill) {
     std::iota(v1.begin(), std::find(v1.begin(), v1.end(), 5), -5);
     std::copy(v1.begin(), v1.end(), std::ostream_iterator<int>(std::cout, " "));
     BOOST_TEST((v1 == std::vector<int>{-5, -4, -3, -2, 5, 6, 7, 8, 9, 10}));
+
+    std::replace(v1.begin(), (v1.begin() + 4), -2, 2);
+    BOOST_TEST((v1 == std::vector<int>{-5, -4, -3, 2, 5, 6, 7, 8, 9, 10}));
+
+    std::replace_if(v1.begin(), v1.end(), [](const auto& elem) {
+        return elem % 2 == 0;
+    }, 1);
+    BOOST_TEST((v1 == std::vector<int>{-5, 1, -3, 1, 5, 1, 7, 1, 9, 1}));
 }
