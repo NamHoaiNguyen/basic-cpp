@@ -10,8 +10,7 @@
 #include <vector>
 using namespace std;
 
-void log(std::string_view txt, const std::vector<int>& vec)
-{
+void log(std::string_view txt, const std::vector<int>& vec) {
     std::cout << txt;
     std::copy(vec.begin(), vec.end(), std::ostream_iterator<int>(std::cout, " "));
     std::cout << std::endl;
@@ -26,8 +25,7 @@ void log(std::string_view txt, int64_t val, bool tag) {
 }
 
 /*test std::for_each, std::transform*/
-BOOST_AUTO_TEST_CASE(test_for_each_transform)
-{
+BOOST_AUTO_TEST_CASE(test_for_each_transform) {
     TEST_LOG();
 
     std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -57,8 +55,7 @@ BOOST_AUTO_TEST_CASE(test_for_each_transform)
 }
 
 /*test any_of, all_of, none_of*/
-BOOST_AUTO_TEST_CASE(test_algorithm)
-{
+BOOST_AUTO_TEST_CASE(test_algorithm) {
     TEST_LOG();
 
     std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -82,24 +79,22 @@ BOOST_AUTO_TEST_CASE(test_algorithm)
 }
 
 /*remove, erase*/
-BOOST_AUTO_TEST_CASE(test_remove)
-{
+BOOST_AUTO_TEST_CASE(test_remove) {
     TEST_LOG();
 
     std::vector<int> vec = {1,1,2,4,2,3,3,3,5,5,4,5,2,8,1,1,2,2,3,5,8};
 
     auto rem = vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
     log("Vector after applying std::remove ", vec);
-    BOOST_TEST((vec == std::vector{1, 1, 2, 4, 2, 3, 3, 3, 5, 5, 4, 5, 2, 1, 1, 2, 2, 3, 5}));
+    BOOST_TEST((vec == std::vector<int>{1, 1, 2, 4, 2, 3, 3, 3, 5, 5, 4, 5, 2, 1, 1, 2, 2, 3, 5}));
    
     auto uni = vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
     log("Vector after applying std::unique ", vec);
-    BOOST_TEST((vec == std::vector{1, 2, 4, 2, 3, 5, 4, 5, 2, 1, 2, 3, 5}));
+    BOOST_TEST((vec == std::vector<int>{1, 2, 4, 2, 3, 5, 4, 5, 2, 1, 2, 3, 5}));
 }
 
 /*partition, partition_point*/
-BOOST_AUTO_TEST_CASE(test_partition)
-{
+BOOST_AUTO_TEST_CASE(test_partition) {
     TEST_LOG();
 
     std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -139,8 +134,7 @@ namespace test_level_of_abstraction {
 }
 
 /*find, find_if, find_if_not, binary_search, equal_range*/
-BOOST_AUTO_TEST_CASE(test_find)
-{
+BOOST_AUTO_TEST_CASE(test_find) {
     TEST_LOG();
 
     using namespace test_level_of_abstraction;
@@ -198,12 +192,11 @@ BOOST_AUTO_TEST_CASE(test_find)
     
     std::cout << std::endl;
 
-    BOOST_TEST((v == std::vector{1, 2, 6, 6, 4, 6, 7, 8, 9, 10}));
+    BOOST_TEST((v == std::vector<int>{1, 2, 6, 6, 4, 6, 7, 8, 9, 10}));
 }
 
 /*distance*/
-BOOST_AUTO_TEST_CASE(test_distance)
-{
+BOOST_AUTO_TEST_CASE(test_distance) {
     TEST_LOG();
 
     std::vector<int> v = {1, 2, 3, 4};
@@ -214,8 +207,7 @@ BOOST_AUTO_TEST_CASE(test_distance)
 }
 
 /*min, max, min_element, max_element*/
-BOOST_AUTO_TEST_CASE(test_min_max)
-{
+BOOST_AUTO_TEST_CASE(test_min_max) {
     TEST_LOG();
 
     constexpr auto a = 1;
@@ -232,9 +224,19 @@ BOOST_AUTO_TEST_CASE(test_min_max)
     std::cout << "max element at " << max_elem << std::endl;
 }
 
+/*fill, generate, iota*/
+BOOST_AUTO_TEST_CASE(test_fill) {
+    std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::fill(v.begin(), v.end(), -1);
+    BOOST_TEST((v == std::vector<int>{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}));
 
+    // std::generate(v.begin(), v.end(), [n = 1] () mutable { return n++; });
+    //     return elem++; 
+    // });
 
-
-
-
-
+    // BOOST_TEST((v == std::vector<int>{0, 2, 4, 6, 8, 10, 6, 7, 8, 9}));
+    std::vector<int> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::iota(v1.begin(), std::find(v1.begin(), v1.end(), 5), -5);
+    std::copy(v1.begin(), v1.end(), std::ostream_iterator<int>(std::cout, " "));
+    BOOST_TEST((v1 == std::vector<int>{-5, -4, -3, -2, 5, 6, 7, 8, 9, 10}));
+}
