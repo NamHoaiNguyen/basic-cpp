@@ -30,8 +30,8 @@
 *.exe
 *.out
 *.app
-bst
-btree
+# bst
+#btree
 
 # Build directory
 out/
