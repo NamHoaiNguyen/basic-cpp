@@ -55,6 +55,6 @@ out/
 # **/CMakeFiles/
 
 # Executable file
-bst
+#bst
 constexpr
 cpp17_test
