@@ -6,8 +6,10 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
+#include <random>
 #include <string_view>
 #include <vector>
+
 using namespace std;
 
 void log(std::string_view txt, const std::vector<int>& vec) {
@@ -54,9 +56,20 @@ BOOST_AUTO_TEST_CASE(test_for_each_transform) {
     BOOST_REQUIRE(check_equal_vec2 == true);
 }
 
+namespace overload_operator {
+    template<typename Os, typename V>
+    Os& operator<< (Os& os, V const& v) {
+        os << "{ ";
+        for (auto const& e : v) os << e << ' ';
+        return os << "}";
+    }
+}
+
 /*test any_of, all_of, none_of*/
-BOOST_AUTO_TEST_CASE(test_algorithm) {
+BOOST_AUTO_TEST_CASE(test_range) {
     TEST_LOG();
+
+    using namespace overload_operator;
 
     std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -76,6 +89,30 @@ BOOST_AUTO_TEST_CASE(test_algorithm) {
 		return elem % 2 == 0;
 	});
 	log("Has no even elements: ", none, true);
+
+    static constexpr auto v1 = {1, 2, 3, 4, 5};
+    static constexpr auto v2 = {3, 5, 4, 1, 2};
+    static constexpr auto v3 = {3, 5, 4, 1, 1};
+
+    std::cout << v2 << " is a permutation of " << v1 << ": " << std::boolalpha
+              << std::is_permutation (v1.begin(), v1.end(), v2.begin()) << std::endl
+              << v3 << " is a permutation of " << v1 << ": " << std::boolalpha
+              << std::is_permutation (v1.begin(), v1.end(), v3.begin(), v3.end()) << std::endl;  
+
+    std::vector<char> v1_char {'a', 'b', 'c', 'd'};
+    std::vector<char> v2_char {'a', 'b', 'c', 'd'};
+    
+    std::mt19937 g{std::random_device{}()};
+    while (!std::lexicographical_compare(v1_char.begin(), v1_char.end(),
+                                         v2_char.begin(), v2_char.end())) {
+        for (auto c : v1_char) std::cout << c << ' ';
+        std::cout << ">= ";
+        for (auto c : v2_char) std::cout << c << ' ';
+        std::cout << std::endl;
+ 
+        std::shuffle(v1_char.begin(), v1_char.end(), g);
+        std::shuffle(v2_char.begin(), v2_char.end(), g);
+    }
 }
 
 /*remove, erase*/
@@ -102,6 +139,7 @@ BOOST_AUTO_TEST_CASE(test_partition) {
     std::partition(v.begin(), v.end(), [](int i) {
         return i % 2 == 0;
     });
+
     auto p = std::partition_point(v.begin(), v.end(), [](int i){
         return i % 2 == 0 ;
     });
