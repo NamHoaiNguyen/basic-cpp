@@ -3,6 +3,7 @@
 #include <limits>
 #include <list>
 #include <numeric>
+#include <stack>
 #include <type_traits>
 #include <vector>
 
@@ -34,6 +35,32 @@ public:
             }
         }
     }
+
+    void topoSort() {
+        std::vector<bool> visited(vertex_, false);
+        std::stack<T> stack;
+
+        for (int v = 0; v < vertex_; v++) {
+            if (visited[v] == false) {
+                topoSortUtil(v, visited, stack);
+            }
+        }
+        while (!stack.empty()) {
+            std::cout << stack.top() << " ";
+            stack.pop();
+        }
+    }
+
+    void topoSortUtil(T v, std::vector<bool> &visited, std::stack<T>& stack) {
+        visited[v] = true;
+
+        for (const auto& v_list : adj[v]) {
+            if (!visited[v_list]) {
+                topoSortUtil(v_list, visited, stack);
+            }
+        }
+        stack.push(v);
+    }
 };
 
 int main()
@@ -45,5 +72,8 @@ int main()
     g.addEdge(4, 1);
     g.addEdge(2, 3);
     g.addEdge(3, 1);
-    g.test();
+    // g.test();
+    g.topoSort();
+
+    return 0;
 }
