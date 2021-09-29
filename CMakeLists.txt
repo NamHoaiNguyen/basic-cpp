@@ -30,6 +30,8 @@ if(Boost_FOUND)
 
     add_executable(trail src/other/trail_test.cc)
 
+    add_executable(topo src/basic-ds/topological-sorting/topological-sorting.cc)
+
 endif()
 
 # add_executable(cpp17_test src/cpp17_test.cpp)
