@@ -32,6 +32,8 @@ if(Boost_FOUND)
 
     add_executable(topo src/basic-ds/topological-sorting/topological-sorting.cc)
 
+    add_executable(modern src/modern_cpp_design/modern_cpp_design.cc)
+
 endif()
 
 # add_executable(cpp17_test src/cpp17_test.cpp)
