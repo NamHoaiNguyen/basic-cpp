@@ -32,7 +32,7 @@ if(Boost_FOUND)
 
     add_executable(topo src/basic-ds/topological-sorting/topological-sorting.cc)
 
-    add_executable(modern src/modern_cpp_design/modern_cpp_design.cc)
+    add_executable(modern src/book/modern_cpp_design.cc)
 
 endif()
 
