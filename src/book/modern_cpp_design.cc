@@ -12,6 +12,34 @@
 #include <vector>
 
 namespace techniques {
+    namespace test_partial_template_specialization_ns {
+        template<typename T, typename U>
+        struct foo {
+            void fun() {
+                std::cout << "primary template" << std::endl;
+            }
+        };
+
+        struct test1 { };
+        struct test2 { };
+        struct test3 { };
+
+        template<>
+        struct foo<test1, test3> {
+            void fun() {
+                std::cout << "full specilization test1,test3" << std::endl;
+            }
+        };
+
+        template<typename T> 
+        struct foo<T, test3> {
+            void fun() {
+                std::cout << "partial template specialization T, test3" << std::endl;
+            }
+        };
+
+    }
+
     /*Technique to decide which functon will be called at compile-time(Instead of
     using if-else statement)*/
     namespace test_integral_constants_to_types_ns {
@@ -46,7 +74,7 @@ namespace techniques {
                 virtual void foo() = 0;
         };
 
-        struct Derived1 : public Base {
+        struct Derived : public Base {
             public:
                 void foo() override {
                     std::cout << "Derived class 1" << std::endl;          
@@ -58,13 +86,6 @@ namespace techniques {
                 std::cout << "Not polymorphic class" << std::endl;
             }
         };
-
-        // struct Derived2 : public Base {
-        //     public:
-        //         void foo() override {
-        //             std::cout << "Derived class 2" << std::endl;          
-        //         }
-        // };
 
         template<typename T, bool IsPolymorphic>
         struct Container {
@@ -113,14 +134,29 @@ namespace techniques {
     }
 }
 
+BOOST_AUTO_TEST_CASE(test_partial_template_specialization) {
+    TEST_LOG();
+
+    using namespace techniques::test_partial_template_specialization_ns;
+
+    foo<test1, test2> f12;
+    f12.fun();
+
+    foo<test1, test3> f13;
+    f13.fun();
+
+    foo<test2, test3> f23;
+    f23.fun();
+}
+
 BOOST_AUTO_TEST_CASE(test_integral_constants_to_types) {
     TEST_LOG();
 
     using namespace techniques::test_integral_constants_to_types_ns;
 
-    std::unique_ptr<Base> b = std::make_unique<Derived1>();
+    std::unique_ptr<Base> b = std::make_unique<Derived>();
     /*b->foo(); ???*/
-    Container<std::unique_ptr<Base>, std::is_polymorphic_v<Derived1>> c;
+    Container<std::unique_ptr<Base>, std::is_polymorphic_v<Derived>> c;
     c.foo(b);
 
     std::unique_ptr<Base2> b2;
