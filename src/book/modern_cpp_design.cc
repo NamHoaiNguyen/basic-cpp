@@ -132,6 +132,21 @@ namespace techniques {
                 }
         };
     }
+
+    namespace test_compatability_inhertiance_ns {
+        template<typename T, typename U>
+        class Conversion {
+                using Small = char;
+                class Big {char dummy[2];};
+                static Small Test(U);
+                static Big Test(...);
+                static T MakeT();
+            public:
+                enum {
+                    exists = sizeof(Test(MakeT())) == sizeof(Small)
+                };
+        };
+    }
 }
 
 BOOST_AUTO_TEST_CASE(test_partial_template_specialization) {
@@ -176,4 +191,14 @@ BOOST_AUTO_TEST_CASE(test_type_selection) {
 
     test1.foo();   
     test2.foo();
+}
+
+BOOST_AUTO_TEST_CASE(test_convertibility_inhertance) {
+    TEST_LOG();
+
+    using namespace techniques::test_compatability_inhertiance_ns;
+    
+    std::cout << Conversion<double, int>::exists << std::endl;
+    std::cout << Conversion<char, char*>::exists << std::endl;
+    std::cout << Conversion<std::size_t, std::vector<int>>::exists << std::endl;
 }
