@@ -145,6 +145,41 @@ namespace techniques {
                 enum {
                     exists = sizeof(Test(MakeT())) == sizeof(Small)
                 };
+                enum { sameType = false }; 
+        };
+
+        template<typename T>
+        class Conversion<T, T> {
+            public:
+                enum {exists = 1, sameType = 1};
+        };
+
+        #define SUPERSUBCLASS(T, U) \
+            (Conversion<const U*, const T*>::exists && \
+            !Conversion<const T*, const void*>::sameType)
+
+        #define SUPERSUBCLASS_STRICT(T, U) \
+            (SUPERSUBCLASS(T, U) && \
+            !Conversion<const T, const U>::sameType)
+
+        struct base { };
+
+        struct derived : public base { };
+
+        struct base2 { };
+
+        template<typename T,bool = SUPERSUBCLASS_STRICT(base, T)>
+        struct foo {
+            void fun() {
+                std::cout << "Derived from base class" << std::endl;
+            }
+        };
+
+        template<typename T>
+        struct foo<T, false> {
+            void fun() {
+                std::cout << "Not derived from base class" << std::endl;
+            }
         };
     }
 }
@@ -201,4 +236,10 @@ BOOST_AUTO_TEST_CASE(test_convertibility_inhertance) {
     std::cout << Conversion<double, int>::exists << std::endl;
     std::cout << Conversion<char, char*>::exists << std::endl;
     std::cout << Conversion<std::size_t, std::vector<int>>::exists << std::endl;
+
+    foo<derived> f1;
+    f1.fun();
+    
+    foo<base2> f2;
+    f2.fun();
 }
