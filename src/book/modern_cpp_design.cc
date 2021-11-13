@@ -182,6 +182,32 @@ namespace techniques {
             }
         };
     }
+
+    namespace test_type_traits_ns {
+        class NullType { };
+
+        struct EmptyType { };
+    
+        template<typename T>
+        class TypeTraits {
+            private:
+                template<typename U> 
+                struct PointerTraits {
+                    static constexpr bool result = false;
+                    using PointeeType = NullType;
+                };
+
+                template<typename U>
+                struct PointerTraits<U*> {
+                    static constexpr bool result = true;
+                    using PointeeType = U;
+                };
+            
+            public:
+                static constexpr bool isPointer = PointerTraits<T>::result;
+                using PointeeType = typename PointerTraits<T>::PointeeType;
+        };
+    }
 }
 
 BOOST_AUTO_TEST_CASE(test_partial_template_specialization) {
@@ -242,4 +268,27 @@ BOOST_AUTO_TEST_CASE(test_convertibility_inhertance) {
     
     foo<base2> f2;
     f2.fun();
+}
+
+BOOST_AUTO_TEST_CASE(test_type_traits) {
+    TEST_LOG();
+
+    using namespace techniques::test_type_traits_ns;
+
+    struct foo {
+        private:
+            int val{1};
+        
+        public:
+            void fun() {
+                std::cout << "Value of val " << val << std::endl;
+            }
+    };
+
+    std::cout << "Is pointer " << std::boolalpha << TypeTraits<foo>::isPointer << std::endl;
+    std::cout << "Is pointer " << std::boolalpha << TypeTraits<foo*>::isPointer << std::endl;
+
+    using pointee_t = typename TypeTraits<foo*>::PointeeType;
+    pointee_t test;
+    test.fun();
 }
