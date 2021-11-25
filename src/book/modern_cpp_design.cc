@@ -289,6 +289,7 @@ BOOST_AUTO_TEST_CASE(test_type_traits) {
     std::cout << "Is pointer " << std::boolalpha << TypeTraits<foo*>::isPointer << std::endl;
 
     using pointee_t = typename TypeTraits<foo*>::PointeeType;
+    std::cout << boost::typeindex::type_id<pointee_t>().pretty_name() << std::endl;
     pointee_t test;
     test.fun();
 }

@@ -130,9 +130,24 @@ BOOST_AUTO_TEST_CASE(test_remove) {
     BOOST_TEST((vec == std::vector<int>{1, 2, 4, 2, 3, 5, 4, 5, 2, 1, 2, 3, 5}));
 }
 
+namespace partition_ns {
+    template<typename ForwardIt, typename T>
+    ForwardIt lower_bound(ForwardIt first, ForwardIt last, const T& value)
+    {
+        return std::partition_point(first, last, [value](const auto& x){return x < value;});
+    }
+
+    template<typename ForwardIt, typename T>
+    ForwardIt upper_bound (ForwardIt first, ForwardIt last, const T& value) {
+        return std::partition_point(first, last, [value](const auto& x){return !(value < x);});
+    }
+}
+
 /*partition, partition_point*/
 BOOST_AUTO_TEST_CASE(test_partition) {
     TEST_LOG();
+
+    using namespace partition_ns;
 
     std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
@@ -148,7 +163,15 @@ BOOST_AUTO_TEST_CASE(test_partition) {
     std::copy(v.begin(), p, std::ostream_iterator<int>(std::cout, " "));
     std::cout << "\nAfter partition: ";
     std::copy(p, v.end(), std::ostream_iterator<int>(std::cout, " "));
-    std::cout << std::endl;
+    std::cout << std::endl;    
+
+    std::vector<int> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
+
+    auto lower = partition_ns::lower_bound(v1.begin(), v1.end(), 2);
+    std::cout << "Value of the first lower element " << std::distance(v1.begin(), lower) << std::endl;
+
+    auto upper = partition_ns::upper_bound(v1.begin(), v1.end(), 7);
+    std::cout << "Index of the first upper element " << std::distance(v1.begin(), upper) << std::endl;
 }
 
 /*Testing level of abstraction*/
