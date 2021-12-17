@@ -70,11 +70,24 @@ namespace benchmark_test_crtp_ns
 	template<typename T>
 	class Base_crtp{
 		public:
-			Base_crtp() {}
+			// Base_crtp() {}
 			auto getValue() const {
 				return static_cast<T const&>(*this).getValue();
 				// return this->getValue();
 			}
+		private:
+			/*Prevent derived class inherit from the same base class
+			class Derived1 : public Base<Derived1>
+			{
+				...
+			};
+
+			class Derived2 : public Base<Derived1> // bug in this line of code
+			{
+				...
+			};*/
+			Base_crtp() {}
+			friend T;
 	};
 
 	class Derived_constant_crtp : public Base_crtp<Derived_constant_crtp>
