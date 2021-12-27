@@ -21,7 +21,7 @@ class RBTreeNode {
     public:
         friend class RBTree;
 
-        RBTreeNode(int data) : left(nullptr), right(nullptr), parent(nullptr), colour(RED) {
+        RBTreeNode(int data) : left(nullptr), right(nullptr), parent(nullptr), data{data}, colour(RED) {
 
         }
 
@@ -53,7 +53,7 @@ class RBTree {
 
         // RBTreeNode *balanceInsertRBTree(RBTreeNode *node);
 
-        void balanceInsertRBTree(RBTreeNode *node);
+        void balanceInsertRBTree(RBTreeNode *&node);
 
         int getColor(RBTreeNode *node); 
 
@@ -100,17 +100,17 @@ void RBTree::rotateLeft(RBTreeNode *node) {
     RBTreeNode *right_child = node->right;
     node->right = right_child->left;
 
-    if (node->right == nullptr)
+    if (node->right != nullptr)
         node->right->parent = node;
 
     right_child->parent = node->parent;
 
     if (right_child->parent == nullptr) {
         root = right_child;
-    } else if (right_child->parent = root->parent->left) {
-        root->parent->left = right_child;
+    } else if (node == node->parent->left) {
+        node->parent->left = right_child;
     } else {
-        root->parent->right = right_child;
+        node->parent->right = right_child;
     }
 
     right_child->left = node;
@@ -128,7 +128,7 @@ void RBTree::rotateRight(RBTreeNode *node) {
 
     if (left_child->parent == nullptr) {
         root = left_child;
-    } else if (node = node->parent->left) {
+    } else if (node == node->parent->left) {
         node->parent->left = left_child;
     } else {
         node->parent->right = left_child;
@@ -138,15 +138,15 @@ void RBTree::rotateRight(RBTreeNode *node) {
     node->parent = left_child;
 }
 
-void RBTree::balanceInsertRBTree(RBTreeNode *node) {
+void RBTree::balanceInsertRBTree(RBTreeNode *&node) {
     RBTreeNode *parent{nullptr};
     RBTreeNode *grandparent{nullptr};
     RBTreeNode *uncle{nullptr};
 
-    while (node != nullptr && getColor(node) == RED && getColor(node->parent) == RED) {
+    while (node != root && getColor(node) == RED && getColor(node->parent) == RED) {
         parent = node->parent;
         grandparent = parent->parent;
-        if (parent = grandparent->left) {
+        if (parent == grandparent->left) {
             uncle = grandparent->right;
             if (getColor(uncle) == RED) {
                 setColor(parent, BLACK);
@@ -189,6 +189,8 @@ void RBTree::balanceInsertRBTree(RBTreeNode *node) {
             }
         }
     }
+
+    setColor(root, BLACK);
 }
 
 void RBTree::insert(int data) {
