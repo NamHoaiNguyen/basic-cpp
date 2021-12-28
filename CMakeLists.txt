@@ -35,6 +35,9 @@ if(Boost_FOUND)
     add_executable(rbtree src/basic-ds/rbtree/rbtree.cc
                           src/basic-ds/rbtree/main.cc)
 
+    add_executable(bplustree src/basic-ds/bplustree/bplustree.cc
+                             src/basic-ds/bplustree/main.cc)
+
     add_executable(modern src/book/modern_cpp_design.cc)
 
 endif()
