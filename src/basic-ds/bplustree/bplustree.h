@@ -227,7 +227,6 @@ void BPlusTree::split_node(BPlusTreeNode *child, bool is_leaf, int data) {
         }
 
         if (child == this->root) {
-            std::cout << "Vao day a" << std::endl; 
             BPlusTreeNode *new_root = create_new_node();
 
             if (new_root == nullptr) {
