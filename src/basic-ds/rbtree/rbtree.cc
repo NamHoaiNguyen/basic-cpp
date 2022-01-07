@@ -89,7 +89,7 @@ void RBTree::balanceInsertRBTree(RBTreeNode *&node) {
                 node = grandparent;
             }
             else {
-                /*RR case*/
+                /*LR case*/
                 if (parent->right == node) {
                     rotateLeft(parent);
                     node = parent;
