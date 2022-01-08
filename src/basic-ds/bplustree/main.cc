@@ -25,6 +25,14 @@ int main() {
     tree->insert(90);
     tree->insert(61);
     tree->insert(68);
+    tree->insert(69);
+    tree->insert(95);
+    tree->insert(100);
+    tree->insert(103);
+    tree->insert(107);
+    tree->insert(111);
+    tree->insert(115);
+    // tree->insert(120);
 
     tree->print_tree();
 
