@@ -151,11 +151,14 @@ void BPlusTree::split_node(BPlusTreeNode *child, bool is_leaf, int data) {
             parent->child[pos + 1] = new_child;
             parent->number_used_nodes += 1;
 
+            /*copy node at index 0 of new child to parent node*/
             if (check_node_is_full(parent)) {
                 split_node(parent, false, new_child->data[0]);
             }
         }
     }
+
+    /*internal node*/
     else {
         if (child == this->root) {
             BPlusTreeNode *new_root = create_new_node();
@@ -185,6 +188,8 @@ void BPlusTree::split_node(BPlusTreeNode *child, bool is_leaf, int data) {
             }
             return ;
         }    
+        
+        /*If internal node,*/
         else {
             BPlusTreeNode *parent = find_parent(this->root, child);
             if (parent != nullptr) {
@@ -201,7 +206,6 @@ void BPlusTree::split_node(BPlusTreeNode *child, bool is_leaf, int data) {
                 parent->data[pos] = new_child->data[0];
 
                 for (int i = parent->number_used_nodes; i > pos; i--) {
-                    std::cout << "khong vao day" << std::endl;
                     parent->child[i + 1] = parent->child[i];
                 }
                 parent->child[pos + 1] = new_child;
@@ -211,13 +215,12 @@ void BPlusTree::split_node(BPlusTreeNode *child, bool is_leaf, int data) {
                     split_node(parent, false, new_child->data[0]);
                 }
 
-                if (parent == this->root) {
-                    for (int i = 0; i < new_child->number_used_nodes - 1; i++) {
-                        new_child->data[i] = new_child->data[i + 1];
-                    }
-                    new_child->data[new_child->number_used_nodes - 1] = MIN;
-                    new_child->number_used_nodes--;
+                /*move node at index 0 of new child to parent node*/
+                for (int i = 0; i < new_child->number_used_nodes - 1; i++) {
+                    new_child->data[i] = new_child->data[i + 1];
                 }
+                new_child->data[new_child->number_used_nodes - 1] = MIN;
+                new_child->number_used_nodes--;
             }
         }
     }
