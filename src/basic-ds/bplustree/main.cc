@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main() {
-    BPlusTree *tree = new BPlusTree(5);
+    BPlusTree *tree = new BPlusTree(3);
 
     tree->insert(1);
     tree->insert(6);
@@ -17,21 +17,21 @@ int main() {
     tree->insert(39);
     tree->insert(40);
     tree->insert(50);
-    tree->insert(55);
-    tree->insert(62);
-    tree->insert(60);
-    tree->insert(77);
-    tree->insert(80);
-    tree->insert(90);
-    tree->insert(61);
-    tree->insert(68);
-    tree->insert(69);
-    tree->insert(95);
-    tree->insert(100);
-    tree->insert(103);
-    tree->insert(107);
-    tree->insert(111);
-    tree->insert(115);
+    // tree->insert(55);
+    // tree->insert(62);
+    // tree->insert(60);
+    // tree->insert(77);
+    // tree->insert(80);
+    // tree->insert(90);
+    // tree->insert(61);
+    // tree->insert(68);
+    // tree->insert(69);
+    // tree->insert(95);
+    // tree->insert(100);
+    // tree->insert(103);
+    // tree->insert(107);
+    // tree->insert(111);
+    // tree->insert(115);
     // tree->insert(120);
 
     tree->print_tree();

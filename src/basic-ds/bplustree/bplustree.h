@@ -45,19 +45,27 @@ class BPlusTree {
 
         void insert(int data);
 
-        BPlusTreeNode* create_new_node(int data);
-
         BPlusTreeNode* create_new_node();
 
         bool check_node_is_full(BPlusTreeNode *node);
-
-        void insert_node_nonfull(BPlusTreeNode *node, int data);
 
         void insert_node_to_leaf(BPlusTreeNode *parent, BPlusTreeNode *child, int data);
 
         void split_node(BPlusTreeNode *child, bool is_leaf, int data);
 
-        BPlusTreeNode *find_parent(BPlusTreeNode *root, BPlusTreeNode *node);
+        BPlusTreeNode *find_parent(BPlusTreeNode *root, BPlusTreeNode *node);\
+
+        int get_number_of_key_in_node(BPlusTreeNode *node);
+
+        void set_number_of_key_in_node(BPlusTreeNode *node, int value_change);
+
+        void delete_node(int data);
+
+        void delete_in_leaf_node(BPlusTreeNode *parent, int data);
+
+        bool check_value_in_parent(BPlusTreeNode *child);
+
+        bool check_low_threadshold_in_node(BPlusTreeNode *node);
 
         void print_tree();
 
