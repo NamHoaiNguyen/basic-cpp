@@ -73,9 +73,9 @@ class BPlusTree {
         
         int get_index_of_key_in_node(BPlusTreeNode *node, int data);
 
-        void get_key_from_left_sibling(BPlusTreeNode *node, int pos, int data);
+        bool get_key_from_left_sibling(BPlusTreeNode *node, int pos, int data);
 
-        void get_key_from_right_sibling(BPlusTreeNode *node, int pos, int data);
+        bool get_key_from_right_sibling(BPlusTreeNode *node, int pos, int data);
 
         void print_tree();
 
