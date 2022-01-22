@@ -65,7 +65,23 @@ class BPlusTree {
 
         bool check_value_in_parent(BPlusTreeNode *child);
 
-        bool check_low_threadshold_in_node(BPlusTreeNode *node);
+        bool check_low_threadshold_in_root_node(BPlusTreeNode *node);
+
+        bool check_low_threadshold_in_not_root_node(BPlusTreeNode *node);
+
+        bool check_low_threadshold_in_sibling_for_borrowing(BPlusTreeNode *node);
+        
+        int get_index_of_key_in_node(BPlusTreeNode *node, int data);
+
+        bool get_key_from_left_sibling(BPlusTreeNode *node, int pos, int data);
+
+        bool get_key_from_right_sibling(BPlusTreeNode *node, int pos, int data);
+
+        void delete_key_in_internal_node(BPlusTreeNode* node, int data);
+
+        int get_index_pointer_in_parent(BPlusTreeNode* parent, BPlusTreeNode *child);
+
+        void merge_child_node_with_sibling(BPlusTreeNode* node, int pos, int data);
 
         void print_tree();
 
