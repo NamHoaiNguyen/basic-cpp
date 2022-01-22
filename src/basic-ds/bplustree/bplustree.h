@@ -77,6 +77,8 @@ class BPlusTree {
 
         bool get_key_from_right_sibling(BPlusTreeNode *node, int pos, int data);
 
+        bool delete_key_in_internal_node(BPlusTreeNode* node, int data);
+
         void print_tree();
 
         void print_tree_helper(BPlusTreeNode *root);
