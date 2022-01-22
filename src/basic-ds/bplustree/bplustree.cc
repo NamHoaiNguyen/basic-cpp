@@ -235,18 +235,6 @@ void BPlusTree::insert_node_to_leaf(BPlusTreeNode *parent, BPlusTreeNode *child,
     }
 }
 
-void BPlusTree::insert(int data) {
-    int i = 0;
-    
-    if (root == nullptr) {
-        root = create_new_node();
-        root->data[0] = data; 
-        set_number_of_key_in_node(root, root->number_used_nodes + 1);
-    } else {
-        insert_node_to_leaf(root, root, data);
-    }
-}
-
 bool BPlusTree::check_low_threadshold_in_root_node(BPlusTreeNode *node) {
     return node->number_used_nodes > this->depth / 2 - 2 ? true : false;
 }
@@ -304,26 +292,17 @@ bool BPlusTree::get_key_from_left_sibling(BPlusTreeNode *child, int pos, int dat
             sibling->data[i] = sibling->data[i + 1];
         }
         sibling->data[get_number_of_key_in_node(sibling) - 1] = MIN;
-        set_number_of_key_in_node(sibling, -1);
+        set_number_of_key_in_node(sibling, get_number_of_key_in_node(sibling) - 1);
 
         pos_for_parent = get_number_of_key_in_node(parent_child);
         /*if parent doesn't have node*/
-        if (get_index_of_key_in_node(parent_child, data) == -1) {
+        if ((pos_for_parent = get_index_of_key_in_node(parent_child, data)) == -1) {
             parent_child->data[0] = median_key; /*child->data[0];*/
         }
         /*Need to delete in parent*/
         else { 
-            /*why do it here?*/ 
-            // if (!check_low_threadshold_in_not_root_node(parent_child)) {
-            //     if (check_low_threadshold_in_sibling_for_borrowing(parent_child->prev)) {
-            //         get_key_from_left_sibling(parent_child, pos_for_parent, data);
-            //     }
-            //     else if (check_low_threadshold_in_sibling_for_borrowing(parent_child->next)) {
-            //         get_key_from_right_sibling(parent_child, pos_for_parent, data);
-            //     }
-            // }
             int borrow_key = sibling->data[0];
-            parent_child->data[0] = borrow_key; 
+            parent_child->data[pos_for_parent] = borrow_key; 
         }
 
         delete_key_in_internal_node(parent_child, data);
@@ -336,26 +315,26 @@ bool BPlusTree::get_key_from_right_sibling(BPlusTreeNode *child, int pos, int da
     if (child->next == nullptr || !check_low_threadshold_in_sibling_for_borrowing(child->next)) {
         return false;
     }
-     
-    BPlusTreeNode *sibling = child->next;
+
+    BPlusTreeNode *right_sibling = child->next;
     BPlusTreeNode *parent_child = find_parent(this->root, child);
     BPlusTreeNode *parent_sibling = find_parent(this->root, child->next);
     int pos_for_parent{0};
 
     if (parent_child != nullptr && parent_child == parent_sibling) {
-        child->data[get_number_of_key_in_node(child)] = sibling->data[0];
+        child->data[get_number_of_key_in_node(child)] = right_sibling->data[0];
         for (int i = pos; i < get_number_of_key_in_node(child); i++) {
             child->data[i] = child->data[i + 1];
         }
         child->data[get_number_of_key_in_node(child)] = MIN;
 
         /*delete node in sibling*/
-        int median_key = sibling->data[get_number_of_key_in_node(sibling) / 2];
-        for (int i = 0; i < get_number_of_key_in_node(sibling) - 1; i++) {
-            sibling->data[i] = sibling->data[i + 1];
+        int median_key = right_sibling->data[get_number_of_key_in_node(right_sibling) / 2];
+        for (int i = 0; i < get_number_of_key_in_node(right_sibling) - 1; i++) {
+            right_sibling->data[i] = right_sibling->data[i + 1];
         }
-        sibling->data[get_number_of_key_in_node(sibling) - 1] = MIN;
-        set_number_of_key_in_node(sibling, -1);
+        right_sibling->data[get_number_of_key_in_node(right_sibling) - 1] = MIN;
+        set_number_of_key_in_node(right_sibling, get_number_of_key_in_node(right_sibling) - 1);
         
         pos_for_parent = get_number_of_key_in_node(parent_child);
 
@@ -363,27 +342,14 @@ bool BPlusTree::get_key_from_right_sibling(BPlusTreeNode *child, int pos, int da
         Add the median key of the sibling node to the parent*/
         if (get_index_of_key_in_node(parent_child, data) == -1) {
             // int median_key = sibling->data[0];  /*or get_number_of_key_in_node(sibling) / 2*/                        
-            parent_child->data[0] = median_key;
+            int pointer_index_in_parent = get_index_pointer_in_parent(parent_child, right_sibling);
+            parent_child->data[pointer_index_in_parent - 1] = median_key;
         }
         /*Need to delete in parent*/
         else { 
-            int borrow_key = sibling->data[0];
-            parent_child->data[0] = borrow_key; 
-            // if (check_low_threadshold_in_not_root_node(parent_child)) {
-            //     int borrow_key = sibling->data[0];
-            //     parent_child->data[0] = borrow_key;
-            // }
-            // else {
-
-            // }
-            // if (!check_low_threadshold_in_not_root_node(parent_child)) {
-            //     if (check_low_threadshold_in_sibling_for_borrowing(parent_child->prev)) {
-            //         get_key_from_left_sibling(parent_child, pos_for_parent, data);
-            //     }
-            //     else if (check_low_threadshold_in_sibling_for_borrowing(parent_child->next)) {
-            //         get_key_from_right_sibling(parent_child, pos_for_parent, data);
-            //     }
-            // }
+            int borrow_key = right_sibling->data[0];
+            int pointer_index_in_parent = get_index_pointer_in_parent(parent_child, right_sibling);
+            parent_child->data[pointer_index_in_parent - 1] = borrow_key; 
         }
 
         delete_key_in_internal_node(parent_child, data);
@@ -392,7 +358,67 @@ bool BPlusTree::get_key_from_right_sibling(BPlusTreeNode *child, int pos, int da
     return true;
 }
 
-bool BPlusTree::delete_key_in_internal_node(BPlusTreeNode* node, int data) {
+int BPlusTree::get_index_pointer_in_parent(BPlusTreeNode *parent, BPlusTreeNode *child) {
+    int index{-1};
+    
+    for (int i = 0; i <= get_number_of_key_in_node(parent); i++) {
+        if (parent->child[i] == child) {
+            index = i;
+            break;
+        }
+    }
+
+    return index;
+}
+
+void BPlusTree::merge_child_node_with_sibling(BPlusTreeNode* child, int pos, int data) {
+    BPlusTreeNode *left_sibling = child->prev;
+    BPlusTreeNode *right_sibling = child->next;
+    BPlusTreeNode *parent = find_parent(this->root, child);
+    
+    for (int i = pos; i < get_number_of_key_in_node(child) - 1; i++) {
+        child->data[i] = child->data[i + 1];
+    }
+    child->data[get_number_of_key_in_node(child) - 1] = MIN;
+    set_number_of_key_in_node(child, get_number_of_key_in_node(child) - 1);
+
+    /*merge*/
+    if (parent != nullptr && (parent == find_parent(this->root, left_sibling) || 
+        (parent == find_parent(this->root, right_sibling)))) { 
+
+        if (left_sibling != nullptr) {
+            for (int i = 0; i < get_number_of_key_in_node(child); i++) {
+                left_sibling->data[(get_number_of_key_in_node(left_sibling)) + i - 1] = child->data[i];
+            }
+            set_number_of_key_in_node(left_sibling, get_number_of_key_in_node(left_sibling) + get_number_of_key_in_node(child));        
+        }
+        else if (right_sibling != nullptr) {
+            for (int i = get_number_of_key_in_node(right_sibling) - 1; i >= 0; i--) {
+                right_sibling->data[i + get_number_of_key_in_node(child)] = right_sibling->data[i];
+            }
+            for (int i = 0; i < get_number_of_key_in_node(child); i++) {
+                right_sibling->data[i] = child->data[i];
+            }
+            set_number_of_key_in_node(right_sibling, get_number_of_key_in_node(right_sibling) + get_number_of_key_in_node(child));        
+        }
+
+        int pointer_index_in_parent = get_index_pointer_in_parent(parent, child);
+        for (int i = pointer_index_in_parent ; i < get_number_of_key_in_node(parent) - 1; i++) {
+            parent->data[i] = parent->data[i + 1];
+        }
+
+        for (int i = pointer_index_in_parent; i < get_number_of_key_in_node(parent); i++) {
+            parent->child[i] = parent->child[i + 1];
+        }
+        parent->data[get_number_of_key_in_node(parent) - 1] = MIN;
+        parent->child[get_number_of_key_in_node(parent)] = nullptr;
+        set_number_of_key_in_node(parent, get_number_of_key_in_node(parent) - 1);
+    }
+    /*Handle key and pointer in parent*/
+
+}
+
+void BPlusTree::delete_key_in_internal_node(BPlusTreeNode* node, int data) {
     int index{-1};
     
     if ((index = get_index_of_key_in_node(node, data)) == -1) 
@@ -408,6 +434,7 @@ void BPlusTree::delete_in_leaf_node(BPlusTreeNode *child, int data) {
     bool left_sibling_higher_than_threshold{false};
     bool right_sibling_higher_than_threshold{false};
 
+    // std::cout << "check delete in leaf " << child->data[0] << " " << child->isleaf <<  std::endl;
     if (child->isleaf && child == this->root) {
         int pos = get_index_of_key_in_node(child, data);
 
@@ -427,45 +454,31 @@ void BPlusTree::delete_in_leaf_node(BPlusTreeNode *child, int data) {
     if (child->isleaf) {
         /*If number of node > depth / 2*/
         if (check_low_threadshold_in_not_root_node(child)) {
-            BPlusTreeNode *parent = find_parent(this->root, child);
-            if (parent != nullptr) {
-                /*if key exits in node*/
-                int key_index_in_child{-1};
-                if ((key_index_in_child = get_index_of_key_in_node(child, data)) != -1) {
-                    int pos_index_in_parent = get_index_of_key_in_node(parent, data);
-                    /*parent has key*/
-                    // if (pos_index_in_parent != -1) {
-                    //     for (int i = key_index_in_child; i < get_number_of_key_in_node(child) - 1; i++) {
-                    //         child->data[i] = child->data[i + 1];
-                    //     }
-                    //     child->data[get_number_of_key_in_node(child) - 1] = MIN;
-                    //     child->number_used_nodes -= 1;
+            int key_index_in_child{-1};
 
-                    //     parent->data[pos_index_in_parent] = child->data[key_index_in_child];
-                    // }
-                    // /*parent doesn't has key*/
-                    // else {
-                    //     for (int i = key_index_in_child; i < get_number_of_key_in_node(child) - 1; i++) {
-                    //         child->data[i] = child->data[i + 1];
-                    //     }
-                    //     child->data[get_number_of_key_in_node(child) - 1] = MIN;
-                    //     child->number_used_nodes -= 1;
-                    // }
-                    for (int i = key_index_in_child; i < get_number_of_key_in_node(child) - 1; i++) {
-                        child->data[i] = child->data[i + 1];
-                    }
-                    child->data[get_number_of_key_in_node(child) - 1] = MIN;
-                    child->number_used_nodes -= 1;
+            /*if key exits in node*/
+            if ((key_index_in_child = get_index_of_key_in_node(child, data)) != -1) {
 
-                    /*if parent has key:
-                    Fill the empty space in the internal node with the inorder successor*/
+                /*parent has key*/
+                for (int i = key_index_in_child; i < get_number_of_key_in_node(child) - 1; i++) {
+                    child->data[i] = child->data[i + 1];
+                }
+                child->data[get_number_of_key_in_node(child) - 1] = MIN;
+                set_number_of_key_in_node(child, get_number_of_key_in_node(child) - 1);
+
+                /*if parent has key:
+                Fill the empty space in the internal node with the inorder successor*/
+                BPlusTreeNode *parent = find_parent(this->root, child);
+                if (parent != nullptr) {
+                    int pos_index_in_parent{-1};
+                    pos_index_in_parent = get_index_of_key_in_node(parent, data);
                     if (pos_index_in_parent != -1) {
                         parent->data[pos_index_in_parent] = child->data[key_index_in_child];
                     }
                 }
-                else {
-                    std::cout << "Key not exits in node" << std::endl;      
-                }
+            }
+            else {
+                std::cout << "Key not exits in node" << std::endl;      
             }
         }
         else {
@@ -494,17 +507,36 @@ void BPlusTree::delete_in_leaf_node(BPlusTreeNode *child, int data) {
             }
             /*Merge child and sibling and delete one node in parent*/
             if (!left_sibling_higher_than_threshold && !right_sibling_higher_than_threshold) {
-                for (int i = pos; i < get_number_of_key_in_node(child) - 1; i++) {
-                    child->data[i] = child->data[i + 1];
-                }
-                child->data[get_number_of_key_in_node(child) - 1] = MIN;
-                child->number_used_nodes -=1;
-
-                /*Merge node and sibling*/
-                
+                merge_child_node_with_sibling(child, pos, data);
             }
         }
     }
+    else {
+        int pos = 0;
+
+        while (pos < child->number_used_nodes && child->data[pos] <= data) {
+            pos++;
+        }
+
+        if (child->child[pos] != nullptr) {
+            // parent = child;
+            child = child->child[pos];
+        }
+        delete_in_leaf_node(child, data);
+    }
+
+}
+
+void BPlusTree::insert(int data) {
+    int i = 0;
+    
+    if (root == nullptr) {
+        root = create_new_node();
+        root->data[0] = data; 
+        set_number_of_key_in_node(root, root->number_used_nodes + 1);
+    } else {
+        insert_node_to_leaf(root, root, data);
+    }
 }
 
 void BPlusTree::delete_node(int data) {
@@ -514,15 +546,6 @@ void BPlusTree::delete_node(int data) {
 
     delete_in_leaf_node(this->root, data);
 }
-
-void BPlusTree::delete_node(int data) {
-    if (root == nullptr) {
-        return;
-    }
-
-    delete_in_leaf_node(this->root, data);
-}
-
 
 void BPlusTree::print_tree() {
     print_tree_helper(this->root);
