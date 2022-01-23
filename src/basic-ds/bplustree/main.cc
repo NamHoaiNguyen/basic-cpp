@@ -58,13 +58,13 @@ int main() {
     tree->insert(180);
     tree->insert(250);
 
-    tree->delete_node(66);
-    tree->delete_node(100);
-    tree->delete_node(180);
-    tree->delete_node(250);
-    tree->delete_node(99);
-    tree->delete_node(130);
-    // tree->delete_node(300);
+    tree->delete_key(66);
+    tree->delete_key(100);
+    tree->delete_key(180);
+    tree->delete_key(250);
+    tree->delete_key(99);
+    tree->delete_key(130);
+    tree->delete_key(300);
 
     tree->print_tree();
 
@@ -90,7 +90,7 @@ int main() {
     // tree->delete_node(180);
     // tree->delete_node(250);
 
-
-
+    tree->delete_tree();
+    delete tree;
     return 0;
 }
