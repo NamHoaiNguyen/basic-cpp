@@ -23,12 +23,13 @@ class BPlusTreeNode {
         BPlusTreeNode() : prev(nullptr), next(nullptr), child(nullptr), isleaf(true) {
 
         }
-
-        ~BPlusTreeNode() {
-            delete(prev);
-            delete(next);
-            delete(*child);
-        }
+        // ~BPlusTreeNode() = default;
+        // ~BPlusTreeNode() {
+        //     delete[] data;
+        //     for (int i = 0; i< number_used_nodes; i++) {
+        //         delete child[i];
+        //     }
+        // }
 
         friend class BPlusTree;
 };
@@ -59,7 +60,7 @@ class BPlusTree {
 
         void set_number_of_key_in_node(BPlusTreeNode *node, int value_change);
 
-        void delete_node(int data);
+        void delete_key(int data);
 
         void delete_in_leaf_node(BPlusTreeNode *parent, int data);
 
@@ -82,6 +83,12 @@ class BPlusTree {
         int get_index_pointer_in_parent(BPlusTreeNode* parent, BPlusTreeNode *child);
 
         void merge_child_node_with_sibling(BPlusTreeNode* node, int pos, int data);
+
+        void delete_all_node(BPlusTreeNode *node);
+
+        void delete_leaf_node(BPlusTreeNode *node);
+
+        void delete_tree();
 
         void print_tree();
 
