@@ -111,9 +111,13 @@ void BPlusTree::split_node(BPlusTreeNode *child, bool is_leaf, int data) {
 
     /*leak mem!!!*/
     BPlusTreeNode *new_child = create_new_node();
-
+    // BPlusTreeNode *new_child = nullptr;
     if (new_child == nullptr) 
         return;
+
+    // BPlusTreeNode *parent = find_parent(this->root, child);
+    // int index_in_parent = get_index_pointer_in_parent(parent, child);
+    // new_child = parent->child[index_in_parent +1];
 
     number_of_current_node_child = get_number_of_key_in_node(child);
     assert(number_of_current_node_child == this->depth);
