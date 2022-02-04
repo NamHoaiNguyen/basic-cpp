@@ -1,3 +1,4 @@
-## Bigg
-
-random cpp training stuffs
+Bigg
+```
+A small repo for random cpp experiments
+```
