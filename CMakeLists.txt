@@ -38,6 +38,8 @@ if(Boost_FOUND)
     add_executable(bplustree src/basic-ds/bplustree/bplustree.cc
                              src/basic-ds/bplustree/main.cc)
 
+    add_executable(hashjoin src/basic-ds/hashjoin/main.cc)
+
     add_executable(modern src/book/modern_cpp_design.cc)
 
 endif()
